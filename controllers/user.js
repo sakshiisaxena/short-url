@@ -15,11 +15,17 @@ async function handleUserLogIn(req, res) {
     const user = await User.findOne({email, password});
     if (!user) return res.render("login", {error: "Invalid username and password"});
 
-    const sessionId = uuidv4();
-    setUser(sessionId, user);
-    res.cookie("uid", sessionId);
+    //--------token based-------
+    const token = setUser(user);
+    res.cookie("uid", token)
+    return res.redirect("/")
 
-    return res.render("home");
+
+    //--------session based-----------
+    // const sessionId = uuidv4();
+    // setUser(sessionId, user);
+    // res.cookie("uid", sessionId);
+    // return res.render("home");
 }
 
 module.exports = {
